@@ -1,6 +1,6 @@
 import CardProduct from "../components/Fragments/CardProduct"
 import Button from "../components/Elements/Button"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const products = [
     {
@@ -76,8 +76,20 @@ const ProductsPage = () => {
                 }
             ])
         }
-
     }
+
+    const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || [])
+    
+    const totalPriceRef = useRef(null)
+    console.log(totalPriceRef)
+
+    useEffect(() => {
+        if(cart.length > 0) {
+            totalPriceRef.current.style.display = "table-row"
+        }else {
+            totalPriceRef.current.style.display = "none"
+        }
+    }, [cart])
 
     return (
         <>
@@ -85,7 +97,7 @@ const ProductsPage = () => {
                 {email}
                 <Button className="bg-black ml-5" onClick={handleLogout}>Logout</Button>
             </div>
-            <div className="flex justify-center bg-red-500 py-5">
+            <div className="flex justify-center py-5">
                 <div className="w-4/6 flex flex-wrap">
                     {products.map((product) => (
                         <CardProduct key={product.id}>
@@ -125,7 +137,7 @@ const ProductsPage = () => {
                                 </tr>
                             )
                         })}
-                        <tr>
+                        <tr ref={totalPriceRef}>
                             <td colSpan={3}>
                                 <b>Price</b>
                             </td>
