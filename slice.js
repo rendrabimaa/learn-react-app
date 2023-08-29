@@ -4,7 +4,9 @@ const { configureStore, createSlice } = toolkit;
 
 const cartSlice = createSlice({
     name: "cart",
-    initialState: [],
+    initialState: {
+        data: JSON.parse(localStorage.getItem("cart")) || []
+    },
     reducers: {
         addToCart(state, action) {
             state.push(action.payload)
